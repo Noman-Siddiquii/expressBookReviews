@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
@@ -86,5 +87,47 @@ public_users.get('/review/:isbn', function (req, res) {
     return res.status(404).json({ message: "Book not found with the given ISBN." });
   }
 });
+
+const getBooks = async () => {
+  try {
+    const response = await axios.get('http://localhost:5000/');
+    console.log("List of books using async/await:\n", response.data);
+  } catch (error) {
+    console.error("Error fetching books:", error.message);
+  }
+};
+
+const getBookByISBN = async (isbn) => {
+  try {
+    const response = await axios.get(`http://localhost:5000/isbn/${isbn}`);
+    console.log("Book details by ISBN:\n", response.data);
+  } catch (error) {
+    console.error("Error fetching book by ISBN:", error.message);
+  }
+};
+
+const getBooksByAuthor = async (author) => {
+  try {
+    const response = await axios.get(`http://localhost:5000/author/${author}`);
+    console.log("Books by Author:\n", response.data);
+  } catch (error) {
+    console.error("Error fetching books by author:", error.message);
+  }
+};
+
+const getBooksByTitle = async (title) => {
+  try {
+    const response = await axios.get(`http://localhost:5000/title/${title}`);
+    console.log("Books by Title:\n", response.data);
+  } catch (error) {
+    console.error("Error fetching books by title:", error.message);
+  }
+};
+
+//getBooks();
+//getBookByISBN('1');
+//getBooksByAuthor('Chinua Achebe');
+//getBooksByTitle('Things Fall Apart');
+
 
 module.exports.general = public_users;
